@@ -1,0 +1,26 @@
+Zomato-Data-Analysis-Visualization/
+│
+├── data/
+│   ├── zomato_data.excel          # Raw dataset
+│   └── cleaned_data.excel          # Cleaned dataset (after preprocessing)
+│
+├── notebooks/
+│   ├── 01_data_cleaning.ipynb    # Notebook for data cleaning and preprocessing
+│   ├── 02_exploratory_analysis.ipynb  # Notebook for exploratory data analysis
+│   ├── 03_visualizations.ipynb   # Notebook for creating visualizations
+│   └── 04_advanced_analysis.ipynb # Notebook for advanced analysis (e.g., clustering, sentiment analysis)
+│
+├── src/
+│   ├── data_cleaning.py          # Script for data cleaning
+│   ├── analysis.py               # Script for analysis (time series, clustering, etc.)
+│   ├── visualizations.py         # Script for creating plots and charts
+│   └── utils.py                  # Utility functions used across scripts
+│
+├── results/
+│   ├── figures/                  # Folder for saving generated figures/plots
+│   └── reports/                  # Folder for storing analysis reports
+│
+├── requirements.txt              # List of dependencies for the project
+├── README.md                     # Detailed description of the project
+├── LICENSE                       # License for the repository
+└── .gitignore                    # Ignored files and directories
