@@ -1,0 +1,13 @@
+import pandas as pd
+from textblob import TextBlob
+
+# Perform sentiment analysis on reviews
+df['Sentiment_Polarity'] = df['Review'].apply(lambda x: TextBlob(str(x)).sentiment.polarity)
+
+# Filter high sentiment reviews
+positive_reviews_df = df[df['Sentiment_Polarity'] > 0.5]
+
+# Show top positive reviews
+print(positive_reviews_df[['Restaurant_Name', 'Review', 'Sentiment_Polarity']].head())
+
+
