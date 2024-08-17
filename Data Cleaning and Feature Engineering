@@ -1,0 +1,17 @@
+df['Rating'].fillna(df['Rating'].mean(), inplace=True)
+
+# Feature engineering: Create a rating category
+def rating_category(rating):
+    if rating >= 4.5:
+        return 'Excellent'
+    elif rating >= 4.0:
+        return 'Very Good'
+    elif rating >= 3.5:
+        return 'Good'
+    else:
+        return 'Average'
+
+df['Rating_Category'] = df['Rating'].apply(rating_category)
+
+# Display the head of the dataset with the new feature
+print(df[['Restaurant_Name', 'Rating', 'Rating_Category']].head())
