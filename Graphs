@@ -1,0 +1,123 @@
+#Restaurant Ratings (Bar Chart)
+# Bar plot for restaurant ratings
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Rating', y='Restaurant_Name', data=df.sort_values(by='Rating', ascending=False).head(10), palette='Greens')
+plt.title('Top 10 Restaurants by Rating')
+plt.xlabel('Rating')
+plt.ylabel('Restaurant Name')
+plt.show()
+
+
+#Cost Analysis (Histogram)
+# Histogram for cost for two
+plt.figure(figsize=(10, 6))
+sns.histplot(df['cost_for_two'], bins=20, kde=True, color='blue')
+plt.title('Distribution of Cost for Two')
+plt.xlabel('Cost for Two')
+plt.ylabel('Frequency')
+plt.show()
+
+
+#Cuisine Popularity (Pie Chart)
+# Pie chart for cuisine popularity
+cuisine_counts = df['Cuisines'].value_counts().head(10)
+plt.figure(figsize=(8, 8))
+cuisine_counts.plot.pie(autopct='%1.1f%%', colors=sns.color_palette('Pastel1'))
+plt.title('Top 10 Cuisines')
+plt.ylabel('')
+plt.show()
+
+#Table Booking and Delivery Options (Stacked Bar Chart)
+# Stacked bar chart for table booking and online delivery
+booking_delivery_counts = df.groupby(['Has Table booking', 'Has Online delivery']).size().unstack()
+booking_delivery_counts.plot(kind='bar', stacked=True, figsize=(10, 6), color=['#1f77b4', '#ff7f0e'])
+plt.title('Table Booking vs Online Delivery')
+plt.xlabel('Has Table Booking')
+plt.ylabel('Number of Restaurants')
+plt.show()
+
+#Rating Distribution (Histogram)
+# Histogram for rating distribution
+plt.figure(figsize=(10, 6))
+sns.histplot(df['Rating'], bins=10, kde=True, color='green')
+plt.title('Distribution of Restaurant Ratings')
+plt.xlabel('Rating')
+plt.ylabel('Frequency')
+plt.show()
+
+# Review Analysis (Word Cloud)
+from wordcloud import WordCloud
+
+# Combine all reviews into a single text
+all_reviews = ' '.join(df['Review'].dropna())
+
+# Generate a word cloud
+wordcloud = WordCloud(width=800, height=400, background_color='white').generate(all_reviews)
+
+# Display the word cloud
+plt.figure(figsize=(10, 6))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title('Most Common Words in Reviews')
+plt.show()
+
+#Currency and Cost Comparisons (Bar Chart)
+# Bar chart for currency vs cost
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Currency', y='cost_for_two', data=df, palette='Blues')
+plt.title('Average Cost for Two by Currency')
+plt.xlabel('Currency')
+plt.ylabel('Average Cost for Two')
+plt.show()
+
+
+#Dynamic Filtering and Interactive Visualization using Plotly
+import plotly.express as px
+city_filter = input("Enter the city to filter by (e.g., 'New York'): ")
+price_range_filter = int(input("Enter the price range to filter by (1 to 4): "))
+
+filtered_df = df[(df['City'] == city_filter) & (df['Price_Range'] == price_range_filter)]
+
+# Interactive scatter plot for Rating vs Cost for Two
+fig = px.scatter(filtered_df, x='cost_for_two', y='Rating',
+                 color='Rating', size='Votes',
+                 hover_name='Restaurant_Name',
+                 title=f"Restaurant Ratings vs Cost for Two in {city_filter}")
+
+fig.show()
+
+
+#Optimized Aggregation and Visualization using GroupBy
+city_avg_cost = df.groupby('City')['cost_for_two'].mean().sort_values(ascending=False)
+
+# Plotting the average cost for two by city
+plt.figure(figsize=(12, 8))
+sns.barplot(x=city_avg_cost.values, y=city_avg_cost.index, palette='coolwarm')
+plt.title('Average Cost for Two by City')
+plt.xlabel('Average Cost for Two')
+plt.ylabel('City')
+plt.show()
+
+# Clustering Restaurants Based on Location and Rating
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+
+
+# Filter relevant columns
+X = df[['lat', 'lon', 'Rating']].dropna()
+
+# Perform KMeans clustering
+kmeans = KMeans(n_clusters=5, random_state=42)
+X['Cluster'] = kmeans.fit_predict(X)
+
+# Plot the clusters
+plt.figure(figsize=(10, 6))
+plt.scatter(X['lon'], X['lat'], c=X['Cluster'], cmap='viridis', marker='o')
+plt.colorbar(label='Cluster')
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('Restaurant Clusters Based on Location and Rating')
+plt.show()
+
