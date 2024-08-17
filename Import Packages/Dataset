@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+df = pd.read_excel('/content/Zomato dataset..xlsx')  # Use pd.read_excel
+
+# Display the first few rows of the dataset
+print(df.head())
+
+# Check for missing values
+print(df.isnull().sum())
+
+# Fill missing values if necessary (this is just an example, modify according to your dataset)
+df.fillna({'Rating': 0, 'Votes': 0, 'cost_for_two': df['cost_for_two'].mean()}, inplace=True)
+
+import folium
+
+# Initialize a map centered around the average location
+map_center = [df['lat'].mean(), df['lon'].mean()]
+m = folium.Map(location=map_center, zoom_start=10)
+
+# Add points to the map
+for index, row in df.iterrows():
+    folium.Marker([row['lat'], row['lon']], popup=row['Restaurant_Name']).add_to(m)
+
+# Save the map to an HTML file
+m.save('restaurant_map.html')
